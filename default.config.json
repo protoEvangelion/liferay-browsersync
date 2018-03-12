@@ -1,0 +1,6 @@
+{
+    "BROWSER_SYNC_PORT": "3000",
+    "LIFERAY_PLUGINS_SDK": "/Users/allenziegenfus/liferay/plugins-ee-6.2.x/",
+    "LIFERAY_PORTAL_SRC": "/Users/allenziegenfus/liferay/portal-ee-6.2.x/",
+    "LIFERAY_SERVER_PORT": "80"
+}
