@@ -8,6 +8,7 @@ const defaultConfig = JSON.parse(fs.readFileSync('./default.config.json'));
 const customConfig = JSON.parse(fs.readFileSync('./custom.config.json'));
 
 const config = Object.assign({}, defaultConfig, customConfig);
+const SDK = config.LIFERAY_PLUGINS_SDK;
 
 gulp.task('serve', ['sass-compass'], function() {
     browserSync.init({
@@ -26,26 +27,16 @@ gulp.task('serve', ['sass-compass'], function() {
         ],
     });
 
-    gulp.watch(
-        config.LIFERAY_PLUGINS_SDK + 'themes/osb-www-events-theme/docroot/_diffs/css/**/*.*',
-        ['sass-compass']
-    );
-    gulp.watch(
-        config.LIFERAY_PLUGINS_SDK +
-            'portlets/osb-www-marketing-events-portlet/docroot/events/css/**/*.*',
-        ['sass-compass']
-    );
-    gulp.watch(
-        config.LIFERAY_PLUGINS_SDK +
-            'portlets/osb-www-marketing-events-portlet/docroot/users/css/**/*.*',
-        ['sass-compass']
-    );
-    gulp.watch(
-        config.LIFERAY_PLUGINS_SDK +
-            'portlets/osb-www-marketing-events-portlet/docroot/agenda/css/**/*.*',
-        ['sass-compass']
-    );
-    gulp.watch('stylesheets/scss/**/*.scss', ['sass-compass']);
+    const watchPaths = [
+        'stylesheets/scss/**/*.scss',
+        SDK + 'themes/osb-community-theme/docroot/_diffs/css/**/*.*',
+        SDK + 'themes/osb-www-events-theme/docroot/_diffs/css/**/*.*',
+        SDK + 'portlets/osb-www-marketing-events-portlet/docroot/agenda/css/**/*.*',
+        SDK + 'portlets/osb-www-marketing-events-portlet/docroot/events/css/**/*.*',
+        SDK + 'portlets/osb-www-marketing-events-portlet/docroot/users/css/**/*.*',
+    ];
+
+    watchPaths.forEach(path => gulp.watch(path, ['sass-compass']));
 });
 
 gulp.task('sass-compass', function() {
@@ -56,9 +47,9 @@ gulp.task('sass-compass', function() {
                 sass: 'stylesheets/scss',
                 import_path: [
                     config.LIFERAY_PORTAL_SRC + 'portal-web/docroot/html/css/common',
-                    config.LIFERAY_PLUGINS_SDK +
-                        'portlets/osb-www-marketing-events-portlet/docroot/events/css',
-                    config.LIFERAY_PLUGINS_SDK + 'themes/osb-www-events-theme/docroot/_diffs/css',
+                    SDK + 'themes/osb-community-theme/docroot/_diffs/css',
+                    SDK + 'themes/osb-www-events-theme/docroot/_diffs/css',
+                    SDK + 'portlets/osb-www-marketing-events-portlet/docroot/events/css',
                 ],
             })
         )
