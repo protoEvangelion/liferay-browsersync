@@ -1,20 +1,31 @@
+#!/usr/bin/env node
+'use strict';
+
 const browserSync = require('browser-sync').create();
 const fs = require('fs');
 const gulp = require('gulp');
 const gulp_compass = require('gulp-compass');
+const path = require('path');
 const proxy = require('http-proxy-middleware');
 
-const defaultConfig = JSON.parse(fs.readFileSync('./default.config.json'));
-const customConfig = JSON.parse(fs.readFileSync('./custom.config.json'));
+const browserSyncDir = path.dirname(fs.realpathSync(__filename));
+
+const defaultConfig = JSON.parse(
+    fs.readFileSync(path.join(browserSyncDir, 'default.config.json'))
+);
+const customConfig = JSON.parse(
+    fs.readFileSync(path.join(browserSyncDir, 'custom.config.json'))
+);
 
 const config = Object.assign({}, defaultConfig, customConfig);
 const SDK = config.LIFERAY_PLUGINS_SDK;
+const eventsPortletDir = 'portlets/osb-www-marketing-events-portlet/docroot/';
 
-gulp.task('serve', ['sass-compass'], function() {
+gulp.task('default', ['sass-compass'], function() {
     browserSync.init({
         proxy: '',
-        files: ['assets/**'],
-        serveStatic: ['assets'],
+        files: [path.join(browserSyncDir, 'assets/**')],
+        serveStatic: [path.join(browserSyncDir, 'assets')],
         middleware: [
             function(req, res, next) {
                 const host = req.headers.host.replace(
@@ -28,12 +39,12 @@ gulp.task('serve', ['sass-compass'], function() {
     });
 
     const watchPaths = [
-        'stylesheets/scss/**/*.scss',
-        SDK + 'themes/osb-community-theme/docroot/_diffs/css/**/*.*',
-        SDK + 'themes/osb-www-events-theme/docroot/_diffs/css/**/*.*',
-        SDK + 'portlets/osb-www-marketing-events-portlet/docroot/agenda/css/**/*.*',
-        SDK + 'portlets/osb-www-marketing-events-portlet/docroot/events/css/**/*.*',
-        SDK + 'portlets/osb-www-marketing-events-portlet/docroot/users/css/**/*.*',
+        path.join(browserSyncDir, 'stylesheets/scss/**/*.scss'),
+        path.join(SDK, 'themes/osb-community-theme/docroot/_diffs/css/**/*.*'),
+        path.join(SDK, 'themes/osb-www-events-theme/docroot/_diffs/css/**/*.*'),
+        path.join(SDK, eventsPortletDir, 'agenda/css/**/*.*'),
+        path.join(SDK, eventsPortletDir, 'events/css/**/*.*'),
+        path.join(SDK, eventsPortletDir, 'users/css/**/*.*'),
     ];
 
     watchPaths.forEach(path => gulp.watch(path, ['sass-compass']));
@@ -41,22 +52,23 @@ gulp.task('serve', ['sass-compass'], function() {
 
 gulp.task('sass-compass', function() {
     return gulp
-        .src('stylesheets/scss/**/*.scss')
+        .src(path.join(browserSyncDir, 'stylesheets/scss/**/*.scss'))
         .pipe(
             gulp_compass({
-                sass: 'stylesheets/scss',
+                sass: path.join(browserSyncDir, 'stylesheets/scss'),
                 import_path: [
-                    config.LIFERAY_PORTAL_SRC + 'portal-web/docroot/html/css/common',
-                    SDK + 'themes/osb-community-theme/docroot/_diffs/css',
-                    SDK + 'themes/osb-www-events-theme/docroot/_diffs/css',
-                    SDK + 'portlets/osb-www-marketing-events-portlet/docroot/events/css',
+                    path.join(
+                        config.LIFERAY_PORTAL_SRC,
+                        'portal-web/docroot/html/css/common'
+                    ),
+                    path.join(SDK, 'themes/osb-community-theme/docroot/_diffs/css'),
+                    path.join(SDK, 'themes/osb-www-events-theme/docroot/_diffs/css'),
+                    path.join(SDK, eventsPortletDir, 'events/css'),
                 ],
             })
         )
-        .pipe(gulp.dest('assets'))
+        .pipe(gulp.dest(path.join(browserSyncDir, 'assets')))
         .pipe(browserSync.stream());
 });
 
-gulp.task('default', function() {
-    gulp.run('serve');
-});
+gulp.start('default');
