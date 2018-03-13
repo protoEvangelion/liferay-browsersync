@@ -33,7 +33,7 @@ gulp.task('default', ['sass-compass'], function() {
                     config.LIFERAY_SERVER_PORT
                 );
 
-                proxy({ target: `http://${host}` })(req, res, next);
+                proxy({ target: `http://${host}`, logLevel: 'error' })(req, res, next);
             },
         ],
     });
