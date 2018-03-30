@@ -9,7 +9,7 @@
 
 ```json
 {
-    "LIFERAY_SERVER_PORT": "3000"
+	"LIFERAY_SERVER_PORT": "3000"
 }
 ```
 
