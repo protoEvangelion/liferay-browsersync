@@ -1,6 +1,6 @@
 node_modules
 .sass-cache
-assets/
+assets/**
 css/**
 custom.config.json
 yarn-error.log

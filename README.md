@@ -17,6 +17,7 @@
 
     *   [Ruby install](https://www.ruby-lang.org/en/documentation/installation/)
     *   [Compass install](http://thesassway.com/beginner/getting-started-with-sass-and-compass)
+        *   `gem install compass`
 
 3.  Run:
 
