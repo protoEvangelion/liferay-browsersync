@@ -21,11 +21,11 @@ const config = Object.assign({}, defaultConfig, customConfig);
 const SDK = config.LIFERAY_PLUGINS_SDK;
 const eventsPortletDir = 'portlets/osb-www-marketing-events-portlet/docroot/';
 
-gulp.task('default', ['sass-compass'], function() {
+gulp.task('default', function() {
 	browserSync.init({
 		proxy: '',
-		files: [path.join(browserSyncDir, 'assets/**')],
-		serveStatic: [path.join(browserSyncDir, 'assets')],
+		files: [path.join(browserSyncDir, 'assets/css/**')],
+		serveStatic: [path.join(browserSyncDir, 'assets/css')],
 		middleware: [
 			function(req, res, next) {
 				const host = req.headers.host.replace(
@@ -47,7 +47,7 @@ gulp.task('default', ['sass-compass'], function() {
 		path.join(SDK, eventsPortletDir, 'users/css/**/*.*'),
 	];
 
-	gulp.watch(watchPaths[3], ['sass-compass']);
+	gulp.watch(watchPaths[1], ['sass-compass']);
 
 	// gulp.watch(watchPaths[2], [
 	//     'sass-compass',
@@ -59,20 +59,24 @@ gulp.task('sass-compass', function() {
 		.src(path.join(browserSyncDir, 'stylesheets/scss/**/*.scss'))
 		.pipe(
 			gulp_compass({
+				project: path.join(browserSyncDir, 'assets'),
 				sass: path.join(browserSyncDir, 'stylesheets/scss'),
 				import_path: [
 					path.join(
 						config.LIFERAY_PORTAL_SRC,
 						'portal-web/docroot/html/css/common'
 					),
-					// path.join(SDK, 'themes/osb-community-theme/docroot/_diffs/css'),
-					// path.join(SDK, 'themes/osb-community-theme/docroot/css'),
-					path.join(SDK, 'themes/osb-www-events-theme/docroot/_diffs/css'),
+					path.join(SDK, 'themes/osb-community-theme/docroot/_diffs/css'),
+					path.join(SDK, 'themes/osb-community-theme/docroot/css'),
+					// path.join(SDK, 'themes/osb-www-events-theme/docroot/_diffs/css'),
 					// path.join(SDK, eventsPortletDir, 'events/css'),
 				],
 			})
 		)
-		.pipe(gulp.dest(path.join(browserSyncDir, 'assets')))
+		.on('error', function(error) {
+			console.log('ERROR ====>', error);
+			this.emit('end');
+		})
 		.pipe(browserSync.stream());
 });
 
