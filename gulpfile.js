@@ -47,7 +47,13 @@ gulp.task('default', ['sass-compass'], function() {
         path.join(SDK, eventsPortletDir, 'users/css/**/*.*'),
     ];
 
-    watchPaths.forEach(path => gulp.watch(path, ['sass-compass']));
+    gulp.watch(watchPaths[3], [
+        'sass-compass',
+	]);
+
+	// gulp.watch(watchPaths[2], [
+    //     'sass-compass',
+    // ]);
 });
 
 gulp.task('sass-compass', function() {
@@ -61,13 +67,14 @@ gulp.task('sass-compass', function() {
                         config.LIFERAY_PORTAL_SRC,
                         'portal-web/docroot/html/css/common'
                     ),
-                    path.join(SDK, 'themes/osb-community-theme/docroot/_diffs/css'),
+					// path.join(SDK, 'themes/osb-community-theme/docroot/_diffs/css'),
+					// path.join(SDK, 'themes/osb-community-theme/docroot/css'),
                     path.join(SDK, 'themes/osb-www-events-theme/docroot/_diffs/css'),
-                    path.join(SDK, eventsPortletDir, 'events/css'),
+                    // path.join(SDK, eventsPortletDir, 'events/css'),
                 ],
             })
         )
-        .pipe(gulp.dest(path.join(browserSyncDir, 'assets')))
+        .pipe(gulp.dest(path.join( , 'assets')))
         .pipe(browserSync.stream());
 });
 
