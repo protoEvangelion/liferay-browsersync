@@ -57,3 +57,10 @@ OR Install `gulp-cli` npm module and run this from root of repo:
 ```
 gulp
 ```
+
+## Known Bugs
+
+1.  Wherever you run the `life` command from produces a superfluous css folder with the bundled css
+    *   You can just delete that when you are done developing (it's not needed)
+2.  Navigating to another page removes your css changes
+    *   You have to hit `Ctrl + s` in the css directory where you are making changes to reapply the changes
