@@ -21,31 +21,37 @@ const config = Object.assign({}, defaultConfig, customConfig);
 const SDK = config.LIFERAY_PLUGINS_SDK;
 const eventsPortletDir = 'portlets/osb-www-marketing-events-portlet/docroot/';
 
-gulp.task('default', function() {
-	browserSync.init({
-		proxy: '',
-		files: [path.join(browserSyncDir, 'assets/css/**')],
-		serveStatic: [path.join(browserSyncDir, 'assets/css')],
-		middleware: [
-			function(req, res, next) {
-				const host = req.headers.host.replace(
-					config.BROWSER_SYNC_PORT,
-					config.LIFERAY_SERVER_PORT
-				);
+gulp.task(
+	'default',
+	['sass-community-theme', 'sass-events-theme', 'sass-events-portlet'],
+	function() {
+		browserSync.init({
+			proxy: '',
+			files: [path.join(browserSyncDir, 'assets/**')],
+			serveStatic: [path.join(browserSyncDir, 'assets')],
+			logLevel: 'debug',
+			middleware: [
+				function(req, res, next) {
+					const host = req.headers.host.replace(
+						config.BROWSER_SYNC_PORT,
+						config.LIFERAY_SERVER_PORT
+					);
 
-				proxy({ target: `http://${host}`, logLevel: 'error' })(req, res, next);
-			},
-		],
-	});
-});
+					proxy({ target: `http://${host}`, logLevel: 'error' })(
+						req,
+						res,
+						next
+					);
+				},
+			],
+		});
+	}
+);
 
 /* COMMUNITY THEME */
 
 gulp.watch(
-	[
-		path.join(SDK, 'themes/osb-community-theme/docroot/_diffs/css/**/*'),
-		path.join(SDK, 'themes/osb-community-theme/docroot/_diffs/css/**/*'),
-	],
+	[path.join(SDK, 'themes/osb-community-theme/docroot/_diffs/css/**/*.*')],
 	['sass-community-theme']
 );
 
@@ -54,8 +60,8 @@ gulp.task('sass-community-theme', function() {
 		.src(path.join(browserSyncDir, 'stylesheets/scss/osb-community-theme/**/*.scss'))
 		.pipe(
 			gulp_compass({
-				project: path.join(browserSyncDir, 'assets'),
-				sass: path.join(browserSyncDir, 'stylesheets/scss/osb-community-theme'),
+				// project: path.join(browserSyncDir, 'assets'),
+				sass: path.join(browserSyncDir, 'stylesheets/scss'),
 				import_path: [
 					path.join(
 						config.LIFERAY_PORTAL_SRC,
@@ -66,14 +72,11 @@ gulp.task('sass-community-theme', function() {
 				],
 			})
 		)
-		.on('error', function(error) {
-			console.log('ERROR ====>', error);
-			this.emit('end');
-		})
+		.pipe(gulp.dest(path.join(browserSyncDir, 'assets')))
 		.pipe(browserSync.stream());
 });
 
-/* EVENTS THEME */
+// /* EVENTS THEME */
 
 gulp.watch(path.join(SDK, 'themes/osb-www-events-theme/docroot/_diffs/css/**/*.*'), [
 	'sass-events-theme',
@@ -84,8 +87,7 @@ gulp.task('sass-events-theme', function() {
 		.src(path.join(browserSyncDir, 'stylesheets/scss/osb-www-events-theme/**/*.scss'))
 		.pipe(
 			gulp_compass({
-				project: path.join(browserSyncDir, 'assets'),
-				sass: path.join(browserSyncDir, 'stylesheets/scss/osb-www-events-theme'),
+				sass: path.join(browserSyncDir, 'stylesheets/scss'),
 				import_path: [
 					path.join(
 						config.LIFERAY_PORTAL_SRC,
@@ -95,14 +97,11 @@ gulp.task('sass-events-theme', function() {
 				],
 			})
 		)
-		.on('error', function(error) {
-			console.log('ERROR ====>', error);
-			this.emit('end');
-		})
+		.pipe(gulp.dest(path.join(browserSyncDir, 'assets')))
 		.pipe(browserSync.stream());
 });
 
-/* EVENTS PORTLET */
+// /* EVENTS PORTLET */
 
 gulp.watch(
 	[
@@ -123,11 +122,7 @@ gulp.task('sass-events-portlet', function() {
 		)
 		.pipe(
 			gulp_compass({
-				project: path.join(browserSyncDir, 'assets'),
-				sass: path.join(
-					browserSyncDir,
-					'stylesheets/scss/osb-www-marketing-events-portlet'
-				),
+				sass: path.join(browserSyncDir, 'stylesheets/scss'),
 				import_path: [
 					path.join(
 						config.LIFERAY_PORTAL_SRC,
@@ -137,10 +132,7 @@ gulp.task('sass-events-portlet', function() {
 				],
 			})
 		)
-		.on('error', function(error) {
-			console.log('ERROR ====>', error);
-			this.emit('end');
-		})
+		.pipe(gulp.dest(path.join(browserSyncDir, 'assets')))
 		.pipe(browserSync.stream());
 });
 
