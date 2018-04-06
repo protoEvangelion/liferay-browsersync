@@ -8,14 +8,16 @@
 	"scripts": {
 		"dev": "gulp"
 	},
-	"author":
-		"Allen Ziegenfus <allen.ziegenfus@liferay.com> (https://www.liferay.com/web/allen.ziegenfus/blog)",
+	"author": "Allen Ziegenfus <allen.ziegenfus@liferay.com> (https://www.liferay.com/web/allen.ziegenfus/blog)",
 	"license": "ISC",
 	"dependencies": {},
 	"devDependencies": {
 		"browser-sync": "^2.23.6",
+		"fs-extra": "^5.0.0",
 		"gulp": "^3.9.1",
 		"gulp-compass": "^2.1.0",
-		"http-proxy-middleware": "^0.17.4"
+		"gulp-notify": "^3.2.0",
+		"http-proxy-middleware": "^0.17.4",
+		"node-notifier": "^5.2.1"
 	}
 }
