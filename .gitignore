@@ -4,3 +4,4 @@ assets/**
 css/**
 custom.config.json
 yarn-error.log
+main.scss
