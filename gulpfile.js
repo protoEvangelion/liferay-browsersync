@@ -74,19 +74,18 @@ gulp.task('default', ['notify'], function() {
 gulp.task('notify', function() {
 	return gulp.src(browserSyncDir).pipe(
 		notify({
-			icon: path.join(browserSyncDir, 'icon2.jpg'),
-			title: 'Rocketship Ready For Liftoff 🚀',
-			message:
-				'Start saving files in community/events themes & events portlets...& watch the beauty unfold ❤️',
+			icon: path.join(browserSyncDir, config.NOTIFICATION_ICON1),
+			title: config.NOTIFICATION_TITLE1,
+			message: config.NOTIFICATION_MESSAGE1,
 		})
 	);
 });
 
 const callNotifier = () =>
 	notify({
-		icon: path.join(browserSyncDir, 'icon.jpg'),
-		title: '✓ Sass esta Listo!',
-		message: 'Vamanos a la Guacamole 😊',
+		icon: path.join(browserSyncDir, config.NOTIFICATION_ICON2),
+		title: config.NOTIFICATION_TITLE2,
+		message: config.NOTIFICATION_MESSAGE2,
 	});
 
 /* COMMUNITY THEME */
