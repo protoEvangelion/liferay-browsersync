@@ -1,252 +1,296 @@
 @import "compass";
 @import "mixins";
+
 @import "../../common/css/custom_mixins";
+
 $fontColor: #4C4C4E;
 $standardSpacing: 1em;
+
 #wrapper .osb-www-marketing-events-portlet-events .preview-block a:hover {
-    border-color: #1C75B9;
+	border-color: #1C75B9;
 }
 
 .aui body.yui3-skin-sam .yui3-widget-mask {
-    background: rgba(0, 0, 0, 0.2);
+	background: rgba(0, 0, 0, 0.2);
 }
 
 .ie .osb-www-marketing-events-portlet-events .user-basic .marketing-event {
-    display: block;
-    &:first-child {
-        @include flexbox;
-        .event-information,
-        .users {
-            display: block;
-        }
-    }
+	display: block;
+
+	&:first-child {
+		@include flexbox;
+
+		.event-information, .users {
+			display: block;
+		}
+	}
 }
 
 .osb-www-marketing-events-portlet-events {
-    border: 10px solid red;
-    .basic {
-        input[type="checkbox"] {
-            margin: 0;
-        }
-        input[type='text'],
-        label,
-        select {
-            font-size: 1em;
-            font-weight: 300;
-        }
-        input[type='text'],
-        select {
-            background-color: transparent;
-            height: auto;
-            line-height: 1.5em;
-            width: 220px;
-            @include appearance(none);
-            @include border-radius(0);
-            @include box-sizing(border-box);
-        }
-        input,
-        select,
-        .control-group {
-            @include respond-to(phone) {
-                width: 100%;
-            }
-        }
-        .filter-label {
-            margin: 0.25em;
-            a {
-                background: #909295;
-                color: #FFF;
-                margin-right: 0.15em;
-                &:hover {
-                    background: #5D5F62;
-                    text-decoration: none;
-                }
-            }
-        }
-        .header {
-            text-align: center;
-            .input-text-wrapper {
-                display: inline;
-                margin-left: 3em;
-            }
-        }
-        .header-content {
-            margin-bottom: 25px;
-            text-align: left;
-        }
-        .highlighted-option {
-            background-color: #909295;
-            color: #FFF;
-        }
-        .input-select-wrapper select {
-            background: url(@theme_image_path@/custom/form_dropdowns.svg) no-repeat right -45px;
-            margin-bottom: 0;
-            margin-right: $standardSpacing;
-        }
-        .loading-animation {
-            margin-top: $standardSpacing;
-            padding-top: 40px;
-        }
-        .marketing-event {
-            a {
-                height: 100%;
-                min-height: 320px;
-            }
-            .link-tile-wrapper {
-                padding: 3em 1.5em 0.5em;
-                img,
-                svg {
-                    max-height: 80px;
-                    max-width: 160px;
-                    padding-bottom: 1.5em;
-                }
-                .marketing-event-header {
-                    height: 120px;
-                    @include align-items(center);
-                    @include flexbox;
-                    @include justify-content(center);
-                }
-            }
-        }
-    }
-    .user-basic {
-        .header-title {
-            text-align: center;
-        }
-        .marketing-event {
-            border-radius: 4px;
-            color: $fontColor;
-            overflow: hidden;
-            @include box-sizing(border-box);
-            @include flex-direction(column);
-            @include flexbox;
-            &:focus,
-            &:hover {
-                text-decoration: none;
-            }
-            &:hover {
-                box-shadow: 0 0 2em rgba(0, 0, 0, 0.3);
-            }
-            @include respond-to(desktop, tablet) {
-                margin: 1.5em;
-            }
-            @include respond-to(desktop) {
-                width: calc(33% - 3em);
-                &.upcoming-marketing-event:first-child {
-                    @include align-items(center);
-                    @include flex-direction(row);
-                    max-height: 520px;
-                    width: 100%;
-                    .users img {
-                        height: 100%;
-                    }
-                    .event-information,
-                    .users {
-                        height: 100%;
-                        width: 50%;
-                    }
-                    .event-information {
-                        padding: 2em;
-                    }
-                }
-            }
-            @include respond-to(tablet) {
-                width: calc(50% - 3em);
-            }
-            .cta {
-                margin-top: auto;
-                padding: 1em 0;
-            }
-            .event-information,
-            .users {
-                @include box-sizing(border-box);
-                @include flexbox;
-            }
-            .event-information {
-                @include flex(1);
-                @include flex-direction(column);
-                @include justify-content(center);
-            }
-            .title {
-                font-weight: normal;
-            }
-            .users img {
-                height: 250px;
-                object-fit: cover;
-                width: 100%;
-                &:nth-child(1)+img,
-                &:nth-last-child(2) {
-                    width: 50%;
-                }
-            }
-        }
-    }
+	.basic {
+		input[type="checkbox"] {
+			margin: 0;
+		}
+
+		input[type='text'], label, select {
+			font-size: 1em;
+			font-weight: 300;
+		}
+
+		input[type='text'], select {
+			background-color: transparent;
+			height: auto;
+			line-height: 1.5em;
+			width: 220px;
+
+			@include appearance(none);
+			@include border-radius(0);
+			@include box-sizing(border-box);
+		}
+
+		input, select, .control-group {
+			@include respond-to(phone) {
+				width: 100%;
+			}
+		}
+
+		.filter-label {
+			margin: 0.25em;
+
+			a {
+				background: #909295;
+				color: #FFF;
+				margin-right: 0.15em;
+
+				&:hover {
+					background: #5D5F62;
+					text-decoration: none;
+				}
+			}
+		}
+
+		.header {
+			text-align: center;
+
+			.input-text-wrapper {
+				display: inline;
+				margin-left: 3em;
+			}
+		}
+
+		.header-content {
+			margin-bottom: 25px;
+			text-align: left;
+		}
+
+		.highlighted-option {
+			background-color: #909295;
+			color: #FFF;
+		}
+
+		.input-select-wrapper select {
+			background: url(@theme_image_path@/custom/form_dropdowns.svg) no-repeat right -45px;
+			margin-bottom: 0;
+			margin-right: $standardSpacing;
+		}
+
+		.loading-animation {
+			margin-top: $standardSpacing;
+			padding-top: 40px;
+		}
+
+		.marketing-event {
+			a {
+				height: 100%;
+				min-height: 320px;
+			}
+
+			.link-tile-wrapper {
+				padding: 3em 1.5em 0.5em;
+
+				img, svg {
+					max-height: 80px;
+					max-width: 160px;
+					padding-bottom: 1.5em;
+				}
+
+				.marketing-event-header {
+					height: 120px;
+
+					@include align-items(center);
+					@include flexbox;
+					@include justify-content(center);
+				}
+			}
+		}
+	}
+
+	.user-basic {
+		.header-title {
+			text-align: center;
+		}
+
+		.marketing-event {
+			border-radius: 4px;
+			color: $fontColor;
+			overflow: hidden;
+
+			@include box-sizing(border-box);
+			@include flex-direction(column);
+			@include flexbox;
+
+			&:focus, &:hover {
+				text-decoration: none;
+			}
+
+			&:hover {
+				box-shadow: 0 0 2em rgba(0, 0, 0, 0.3);
+			}
+
+			@include respond-to(desktop, tablet) {
+				margin: 1.5em;
+			}
+
+			@include respond-to(desktop) {
+				width: calc(33% - 3em);
+
+				&.upcoming-marketing-event:first-child {
+					@include align-items(center);
+					@include flex-direction(row);
+
+					max-height: 520px;
+					width: 100%;
+
+					.users img {
+						height: 100%;
+					}
+
+					.event-information, .users {
+						height: 100%;
+						width: 50%;
+					}
+
+					.event-information {
+						padding: 2em;
+					}
+				}
+			}
+
+			@include respond-to(tablet) {
+				width: calc(50% - 3em);
+			}
+
+			.cta {
+				margin-top: auto;
+				padding: 1em 0;
+			}
+
+			.event-information, .users {
+				@include box-sizing(border-box);
+				@include flexbox;
+			}
+
+			.event-information {
+				@include flex(1);
+				@include flex-direction(column);
+				@include justify-content(center);
+			}
+
+			.title {
+				font-weight: normal;
+			}
+
+			.users img {
+				height: 250px;
+				object-fit: cover;
+				width: 100%;
+
+				&:nth-child(1) + img, &:nth-last-child(2) {
+					width: 50%;
+				}
+			}
+		}
+	}
 }
 
 .osb-www-marketing-events-portlet-popup.modal {
-    background-color: #FFF;
-    border-width: 0;
-    box-shadow: none;
-    left: 50% !important;
-    max-width: 600px;
-    overflow: auto;
-    position: absolute;
-    @include border-radius(0);
-    @include respond-to(phone) {
-        width: 100% !important;
-        @include transform(translateX(-50%));
-    }
+	background-color: #FFF;
+	border-width: 0;
+	box-shadow: none;
+	left: 50% !important;
+	max-width: 600px;
+	overflow: auto;
+	position: absolute;
+
+	@include border-radius(0);
+
+	@include respond-to(phone) {
+		width: 100% !important;
+
+		@include transform(translateX(-50%));
+	}
 }
 
 .osb-www-marketing-events-portlet-popup-content {
-    &.modal-content {
-        overflow: visible;
-    }
-    button.close {
-        box-shadow: none;
-        height: 50px;
-        width: 50px;
-        @include transform(translateY(0));
-        &,
-        &:focus,
-        &:hover {
-            opacity: 1;
-        }
-    }
-    .modal-body {
-        overflow: visible;
-    }
-    .modal-header {
-        border-width: 0;
-        padding: 0;
-    }
-    .jsp-view-marketing-event {
-        video {
-            width: 100%;
-        }
-        .marketing-event-content {
-            margin: 20px 0;
-            a {
-                text-decoration: none;
-            }
-            .summary {
-                margin: 20px 10px;
-            }
-        }
-        .marketing-event-footer {
-            padding-bottom: $standardSpacing;
-            text-transform: uppercase;
-            .downloads {
-                padding-bottom: $standardSpacing;
-            }
-        }
-        .marketing-event-image {
-            margin-top: 30px;
-            max-height: 200px;
-            max-width: 720px;
-        }
-        .share-icon {
-            cursor: pointer;
-        }
-    }
+	&.modal-content {
+		overflow: visible;
+	}
+
+	button.close {
+		box-shadow: none;
+		height: 50px;
+		width: 50px;
+
+		@include transform(translateY(0));
+
+		&, &:focus, &:hover {
+			opacity: 1;
+		}
+	}
+
+	.modal-body {
+		overflow: visible;
+	}
+
+	.modal-header {
+		border-width: 0;
+		padding: 0;
+	}
+
+	.jsp-view-marketing-event {
+		video {
+			width: 100%;
+		}
+
+		.marketing-event-content {
+			margin: 20px 0;
+
+			a {
+				text-decoration: none;
+			}
+
+			.summary {
+				margin: 20px 10px;
+			}
+		}
+
+		.marketing-event-footer {
+			padding-bottom: $standardSpacing;
+			text-transform: uppercase;
+
+			.downloads {
+				padding-bottom: $standardSpacing;
+			}
+		}
+
+		.marketing-event-image {
+			margin-top: 30px;
+			max-height: 200px;
+			max-width: 720px;
+		}
+
+		.share-icon {
+			cursor: pointer;
+		}
+	}
 }
