@@ -91,7 +91,6 @@ gulp.task('default', ['notify'], function() {
 gulp.task('notify', function() {
 	return gulp.src(browserSyncDir).pipe(
 		notify({
-			icon: path.join(browserSyncDir, config.NOTIFICATION_ICON1),
 			title: config.NOTIFICATION_TITLE1,
 			message: config.NOTIFICATION_MESSAGE1,
 		})
@@ -100,9 +99,10 @@ gulp.task('notify', function() {
 
 const callNotifier = () =>
 	notify({
-		icon: path.join(browserSyncDir, config.NOTIFICATION_ICON2),
 		title: config.NOTIFICATION_TITLE2,
 		message: config.NOTIFICATION_MESSAGE2,
+		wait: false,
+		sound: false,
 	});
 
 /* COMMUNITY THEME */
