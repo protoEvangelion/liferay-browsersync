@@ -27,6 +27,8 @@ const eventsThemeDir = 'themes/osb-www-events-theme/docroot';
 const commThemeDir = 'themes/osb-community-theme/docroot';
 const stylesDir = path.join(browserSyncDir, 'stylesheets/scss');
 
+/* Copy theme entry point style files into browsersync dir */
+
 fs.copySync(
 	path.join(SDK, commThemeDir, '_diffs/css/custom.css'),
 	path.join(stylesDir, 'osb-community-theme/css/main.scss')
@@ -51,6 +53,21 @@ fs.copySync(
 	path.join(SDK, eventsPortletDir, 'users/css/main.css'),
 	path.join(stylesDir, 'osb-www-marketing-events-portlet/users/css/main.scss')
 );
+
+/* Add admin styles */
+
+const adminStyles = `\n
+	@import url(base.css);
+	@import url(application.css);
+	@import url(layout.css);
+	@import url(dockbar.css);
+	@import url(navigation.css);
+	@import url(portlet.css);
+	@import url(extras.css);
+`
+
+fs.appendFileSync(path.join(stylesDir, 'osb-community-theme/css/main.scss'), adminStyles)
+fs.appendFileSync(path.join(stylesDir, 'osb-www-events-theme/css/main.scss'), adminStyles)
 
 gulp.task('default', ['notify'], function() {
 	browserSync.init({
