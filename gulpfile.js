@@ -9,6 +9,8 @@ const notify = require('gulp-notify');
 const path = require('path');
 const proxy = require('http-proxy-middleware');
 
+/* Setup folders and paths */
+
 const browserSyncDir = path.dirname(fs.realpathSync(__filename));
 const destDir = path.join(browserSyncDir, 'assets');
 
@@ -54,7 +56,7 @@ fs.copySync(
 	path.join(stylesDir, 'osb-www-marketing-events-portlet/users/css/main.scss')
 );
 
-/* Add admin styles */
+/* Add aui styles */
 
 const adminStyles = `\n
 	@import url(base.css);
@@ -64,10 +66,15 @@ const adminStyles = `\n
 	@import url(navigation.css);
 	@import url(portlet.css);
 	@import url(extras.css);
-`
+`;
 
-fs.appendFileSync(path.join(stylesDir, 'osb-community-theme/css/main.scss'), adminStyles)
-fs.appendFileSync(path.join(stylesDir, 'osb-www-events-theme/css/main.scss'), adminStyles)
+fs.appendFileSync(path.join(stylesDir, 'osb-community-theme/css/main.scss'), adminStyles);
+fs.appendFileSync(
+	path.join(stylesDir, 'osb-www-events-theme/css/main.scss'),
+	adminStyles
+);
+
+/* Main Task */
 
 gulp.task('default', ['notify'], function() {
 	browserSync.init({
@@ -88,6 +95,8 @@ gulp.task('default', ['notify'], function() {
 	});
 });
 
+/* Notifications */
+
 gulp.task('notify', function() {
 	return gulp.src(browserSyncDir).pipe(
 		notify({
@@ -105,57 +114,50 @@ const callNotifier = () =>
 		sound: false,
 	});
 
+/* WATCH TASKS */
+
+function mainCallback(srcPath, importPaths) {
+	return gulp
+		.src(path.join(stylesDir, srcPath))
+		.pipe(
+			gulp_compass({
+				sass: stylesDir,
+				import_path: [
+					...importPaths,
+					path.join(
+						config.LIFERAY_PORTAL_SRC,
+						'portal-web/docroot/html/css/common'
+					),
+				],
+			})
+		)
+		.pipe(gulp.dest(destDir))
+		.pipe(browserSync.stream())
+		.pipe(callNotifier());
+}
+
 /* COMMUNITY THEME */
 
 gulp.watch([path.join(SDK, commThemeDir, '_diffs/css/**/*')], ['sass-community-theme']);
 
-gulp.task('sass-community-theme', function() {
-	return gulp
-		.src(path.join(stylesDir, 'osb-community-theme/**/*.scss'))
-		.pipe(
-			gulp_compass({
-				// project: path.join(browserSyncDir, 'assets'),
-				sass: stylesDir,
-				import_path: [
-					path.join(
-						config.LIFERAY_PORTAL_SRC,
-						'portal-web/docroot/html/css/common'
-					),
-					path.join(SDK, commThemeDir, '_diffs/css'),
-					path.join(SDK, commThemeDir, 'css'),
-				],
-			})
-		)
-		.pipe(gulp.dest(destDir))
-		.pipe(browserSync.stream())
-		.pipe(callNotifier());
-});
+gulp.task('sass-community-theme', () =>
+	mainCallback('osb-community-theme/**/*.scss', [
+		path.join(SDK, commThemeDir, '_diffs/css'),
+		path.join(SDK, commThemeDir, 'css'),
+	])
+);
 
-// /* EVENTS THEME */
+/* EVENTS THEME */
 
 gulp.watch(path.join(SDK, eventsThemeDir, '_diffs/css/**/*.*'), ['sass-events-theme']);
 
-gulp.task('sass-events-theme', function() {
-	return gulp
-		.src(path.join(stylesDir, 'osb-www-events-theme/**/*.scss'))
-		.pipe(
-			gulp_compass({
-				sass: stylesDir,
-				import_path: [
-					path.join(
-						config.LIFERAY_PORTAL_SRC,
-						'portal-web/docroot/html/css/common'
-					),
-					path.join(SDK, eventsThemeDir, '_diffs/css'),
-				],
-			})
-		)
-		.pipe(gulp.dest(destDir))
-		.pipe(browserSync.stream())
-		.pipe(callNotifier());
-});
+gulp.task('sass-events-theme', () =>
+	mainCallback('osb-www-events-theme/**/*.scss', [
+		path.join(SDK, eventsThemeDir, '_diffs/css'),
+	])
+);
 
-// /* EVENTS PORTLET */
+/* EVENTS PORTLET */
 
 gulp.watch(
 	[
@@ -166,26 +168,14 @@ gulp.watch(
 	['sass-events-portlet']
 );
 
-gulp.task('sass-events-portlet', function() {
-	return gulp
-		.src(path.join(stylesDir, 'osb-www-marketing-events-portlet/**/*.scss'))
-		.pipe(
-			gulp_compass({
-				sass: stylesDir,
-				import_path: [
-					path.join(
-						config.LIFERAY_PORTAL_SRC,
-						'portal-web/docroot/html/css/common'
-					),
-					path.join(SDK, eventsPortletDir, 'agenda/css'),
-					path.join(SDK, eventsPortletDir, 'events/css'),
-					path.join(SDK, eventsPortletDir, 'users/css'),
-				],
-			})
-		)
-		.pipe(gulp.dest(destDir))
-		.pipe(browserSync.stream())
-		.pipe(callNotifier());
-});
+gulp.task('sass-events-portlet', () =>
+	mainCallback('osb-www-marketing-events-portlet/**/*.scss', [
+		path.join(SDK, eventsPortletDir, 'agenda/css'),
+		path.join(SDK, eventsPortletDir, 'events/css'),
+		path.join(SDK, eventsPortletDir, 'users/css'),
+	])
+);
+
+/* RUN PROGRAM */
 
 gulp.start('default');
