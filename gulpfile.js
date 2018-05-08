@@ -17,11 +17,22 @@ const destDir = path.join(browserSyncDir, 'assets');
 const defaultConfig = JSON.parse(
 	fs.readFileSync(path.join(browserSyncDir, 'default.config.json'))
 );
-const customConfig = JSON.parse(
-	fs.readFileSync(path.join(browserSyncDir, 'custom.config.json'))
+
+const customConfigExists = fs.pathExistsSync(
+	path.join(browserSyncDir, 'custom.config.json')
 );
 
-const config = Object.assign({}, defaultConfig, customConfig);
+let customConfig;
+
+if (customConfigExists) {
+	customConfig = JSON.parse(
+		fs.readFileSync(path.join(browserSyncDir, 'custom.config.json'))
+	);
+}
+
+const config = customConfigExists
+	? Object.assign({}, defaultConfig, customConfig)
+	: defaultConfig;
 
 const SDK = config.LIFERAY_PLUGINS_SDK;
 const eventsPortletDir = 'portlets/osb-www-marketing-events-portlet/docroot/';
@@ -31,14 +42,22 @@ const stylesDir = path.join(browserSyncDir, 'stylesheets/scss');
 
 /* Copy theme entry point style files into browsersync dir */
 
+fs.ensureFileSync(path.join(stylesDir, 'osb-community-theme/css/main.scss'));
+
 fs.copySync(
 	path.join(SDK, commThemeDir, '_diffs/css/custom.css'),
 	path.join(stylesDir, 'osb-community-theme/css/main.scss')
 );
 
+fs.ensureFileSync(path.join(stylesDir, 'osb-www-events-theme/css/main.scss'));
+
 fs.copySync(
 	path.join(SDK, eventsThemeDir, '_diffs/css/custom.css'),
 	path.join(stylesDir, 'osb-www-events-theme/css/main.scss')
+);
+
+fs.ensureFileSync(
+	path.join(stylesDir, 'osb-www-marketing-events-portlet/agenda/css/main.scss')
 );
 
 fs.copySync(
@@ -46,9 +65,26 @@ fs.copySync(
 	path.join(stylesDir, 'osb-www-marketing-events-portlet/agenda/css/main.scss')
 );
 
+fs.ensureFileSync(
+	path.join(stylesDir, 'osb-www-marketing-events-portlet/events/css/main.scss')
+);
+
 fs.copySync(
 	path.join(SDK, eventsPortletDir, 'events/css/main.css'),
 	path.join(stylesDir, 'osb-www-marketing-events-portlet/events/css/main.scss')
+);
+
+fs.ensureFileSync(
+	path.join(stylesDir, 'osb-www-marketing-events-portlet/sponsors/css/main.scss')
+);
+
+fs.copySync(
+	path.join(SDK, eventsPortletDir, 'sponsors/css/main.css'),
+	path.join(stylesDir, 'osb-www-marketing-events-portlet/sponsors/css/main.scss')
+);
+
+fs.ensureFileSync(
+	path.join(stylesDir, 'osb-www-marketing-events-portlet/users/css/main.scss')
 );
 
 fs.copySync(
@@ -163,6 +199,7 @@ gulp.watch(
 	[
 		path.join(SDK, eventsPortletDir, 'agenda/css/**/*.*'),
 		path.join(SDK, eventsPortletDir, 'events/css/**/*.*'),
+		path.join(SDK, eventsPortletDir, 'sponsors/css/**/*.*'),
 		path.join(SDK, eventsPortletDir, 'users/css/**/*.*'),
 	],
 	['sass-events-portlet']
@@ -172,6 +209,7 @@ gulp.task('sass-events-portlet', () =>
 	mainCallback('osb-www-marketing-events-portlet/**/*.scss', [
 		path.join(SDK, eventsPortletDir, 'agenda/css'),
 		path.join(SDK, eventsPortletDir, 'events/css'),
+		path.join(SDK, eventsPortletDir, 'sponsors/css'),
 		path.join(SDK, eventsPortletDir, 'users/css'),
 	])
 );
